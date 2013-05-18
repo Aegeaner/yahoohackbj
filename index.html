@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+	   .labels {
+		 color: black;
+		 background-color: #D0D0D0;
+		 font-family: "Lucida Grande", "Arial", sans-serif;
+		 font-size: 10px;
+		 text-align: center;
+		 width: 40px
+	   }
+    </style>
+    
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+  </head>
+  <body>
+  <div id="map_canvas" style="height:50%" class="hero-unit"></div>
+  <div class="row">
+		<div id="weibo" class="span8">微博占位</div>
+		<div id="weather" class="span4">天气占位</div>
+  </div>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jso.js"></script>
+  <script src="js/yui-min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+	
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCMuTdaoDMJkxVO20dLaXB3JS_mB2NWGHE&sensor=false"></script>
+  <script type="text/javascript" src="js/markerwithlabel.js"></script>
+  <script src="js/weibo.js"></script>
+  <script>
+	var globals = {
+		appkey: "2855984353",
+		accesstoken: null,
+		latitude: null,
+		longitude: null,
+		map: null
+	};
+    function initializeMap() {
+        var mapOptions = {
+          center: new google.maps.LatLng(globals.latitude, globals.longitude),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+        globals.map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+	  function getPosition() {
+		navigator.geolocation.getCurrentPosition(
+		function onSuccess(position) {
+			globals.latitude = position.coords.latitude;
+			globals.longitude = position.coords.longitude;
+			var timestamp = new Date(position.timestamp);
+			console.log("latitude = " + globals.latitude);
+			console.log("longitude = " + globals.longitude);
+			initializeMap();
+			getStatus();
+		},
+		function onError(error) {
+			var txt;
+			switch(error.code) {
+				case error.PERMISSION_DENIED:
+				txt = 'Permission denied';
+				break;
+				case error.POSITION_UNAVAILABLE:
+				txt = 'Position unavailable';
+				break;
+				case error.TIMEOUT:
+				txt = 'Position lookup timed out';
+				break;
+				default:
+				txt = 'Unknown position.'
+			}
+			console.log(txt);
+		});
+	}
+  
+	$(document).ready(function() {
+		getPosition();
+	  });
+  </script>
+  </body>
+</html>
