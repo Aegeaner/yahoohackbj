@@ -5,6 +5,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
       html { height: 100% }
+	  header { text-align: center }
       body { height: 100%; margin: 0; padding: 0 }
       #map_canvas { height: 100% }
 	   .labels {
@@ -21,6 +22,14 @@
 	<link href="css/bootstrap-responsive.css" rel="stylesheet">
   </head>
   <body>
+  <header>
+	<hgroup>
+      <h1>天时·地利·人和</h1>
+		<p>天时：你所在位置的实时天气状况。</p>
+		<p>地理：你所在位置的地图展示以及周围有趣好玩的地点。</p>
+		<p>人和：你所在位置周围的人在发微博说些什么。</p>
+	</hgroup>
+  </header>
   <div id="map_canvas" style="height:50%" class="hero-unit"></div>
   <div class="row">
 		<div id="weibo" class="span8">微博占位</div>
@@ -32,7 +41,7 @@
   <script src="js/yui-min.js"></script>
   <script src="js/bootstrap.min.js"></script>
 	
-  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCMuTdaoDMJkxVO20dLaXB3JS_mB2NWGHE&sensor=false"></script>
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="js/markerwithlabel.js"></script>
   <script src="js/weibo.js"></script>
   <script>

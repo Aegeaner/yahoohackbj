@@ -43,7 +43,7 @@ function getStatus() {
         function handlePoiJSONP(response) {
             var result = '';
             var pois = response.data.pois;
-            console.log(pois);
+            //console.log(pois);
             for(var i=0; i<pois.length; i++) {
                 var title = pois[i].title;
 				var category_name = pois[i].category_name;
