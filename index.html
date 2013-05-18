@@ -138,6 +138,7 @@
 
         globals.map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
+		labelMarker("您所在的位置", globals.latitude, globals.longitude, globals.latitude, globals.longitude);
       }
       function updateMap() {
       	initializeMap();
