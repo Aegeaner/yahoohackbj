@@ -6,7 +6,7 @@
     <style type="text/css">
       html { height: 100% }
 	  header { text-align: center }
-      body { height: 100%; margin: 0; padding: 0 }
+      body { height: 100%; margin: auto; padding: 0 }
       #map_canvas { height: 100% }
 	   .labels {
 		 color: black;
@@ -16,25 +16,89 @@
 		 text-align: center;
 		 width: 40px
 	   }
+	   h3 {
+			text-align:center;
+	   }
+		#weibo-container {
+
+			
+			margin: 3% 1% auto 3%;
+			padding-left: 2%;
+		}
+		#weather-container {
+
+			margin: 3% 3% auto 1%;
+			padding-right: 2%;
+		}
     </style>
     
 	<link href="css/bootstrap.css" rel="stylesheet">
 	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/weather.css" rel="stylesheet">
   </head>
   <body>
   <header>
 	<hgroup>
       <h1>天时·地利·人和</h1>
-		<p>天时：你所在位置的实时天气状况。</p>
-		<p>地理：你所在位置的地图展示以及周围有趣好玩的地点。</p>
-		<p>人和：你所在位置周围的人在发微博说些什么。</p>
 	</hgroup>
   </header>
-  <div id="map_canvas" style="height:50%" class="hero-unit"></div>
+  <header><h3>地利：你周围有趣好玩的地点</h3></header>
+  <div id="map_canvas" style="height:80%"></div>
   <div class="row">
-		<div id="weibo" class="span8">微博占位</div>
-		<div id="weather" class="span4">天气占位</div>
-  </div>
+		<div id="weibo-container" class="span8">
+			<h3>人和：你周围的人在发微博说些什么</h3>
+			<div id="weibo">微博占位</div>
+		</div>
+		<div id="weather-container" class="span4">
+			<h3>天时：你所在位置的天气状况</h3>
+			
+			<div id="weather">
+				<div id="location">
+				  你在：<span id="loc"></span><br>
+				  <span id="geo"></span>
+				</div>
+				<div id="weather-today">
+				  <div id="num-today">
+					温度：<span id="temp-today"></span><br>
+					湿度：<span id="humi-today"></span><br>
+					风速：<span id="wind-today"></span><br>
+				  </div>
+				  <div id="des-today">
+					<img src="" alt="Today's wether" id="img-today"><br>
+					<span id="text-today"></span>
+				  </div>
+				  
+				</div>
+
+				<div id="weather-forecast">
+				  
+
+				  <div id="forecast-second" class="forecast">
+					<span id="time-second"></span>
+					<div id="num-second">
+					  最高气温：<span id="high-temp-second"></span><br>
+					  最低气温：<span id="low-temp-second"></span><br>
+					</div>
+					<div id="des-second">
+					  <img src="" alt="" id="img-second"><br>
+					  <span id="text-second"></span>
+					</div>
+				  </div>
+
+				  <div id="forecast-first" class="forecast">
+					<span id="time-first"></span>
+					<div id="num-first">
+					  最高气温：<span id="high-temp-first"></span><br>
+					  最低气温：<span id="low-temp-first"></span><br>
+					</div>
+					<div id="des-first">
+					  <img src="" alt="" id="img-first"><br>
+					  <span id="text-first"></span>
+					</div>
+				   </div>
+				</div>
+			</div>
+		</div>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/jquery.min.js"></script>
   <script src="js/jso.js"></script>
@@ -44,6 +108,7 @@
   <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
   <script type="text/javascript" src="js/markerwithlabel.js"></script>
   <script src="js/weibo.js"></script>
+  <script src="js/weather.js"></script>
   <script>
 	var globals = {
 		appkey: "2855984353",
@@ -71,6 +136,7 @@
 			console.log("longitude = " + globals.longitude);
 			initializeMap();
 			getStatus();
+			showWeather();
 		},
 		function onError(error) {
 			var txt;
