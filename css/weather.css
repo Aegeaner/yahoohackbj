@@ -1,0 +1,46 @@
+#location {
+	border-bottom: 1px dashed white;
+	padding-bottom: 5px;
+}
+
+#weather{
+	background: url(../img/bg.jpg) no-repeat;
+	font-size: 16px;
+	padding: 20px;
+	width: 100%;
+}
+
+#weather-today {
+	padding-top: 15px;
+	padding-bottom: 5px;
+	border-bottom: 1px dashed white;
+	width: 100%;
+}
+
+#num-today {
+	float:right;
+}
+
+#des-today {
+	
+}
+
+#text-today {
+	/*text-align: center;*/
+}
+
+#weather-forecast {
+	padding-top: 15px;
+}
+
+.forecast {
+	padding: 10px;
+}
+
+.forecast div {
+	padding-bottom: 20px;
+}
+
+#forecast-second {
+	float:right;
+}

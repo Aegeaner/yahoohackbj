@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<title>天时·地利·人和</title>
+    <style type="text/css">
+      html { height: 100% }
+	  header { text-align: center }
+      body { height: 100%; margin: auto; padding: 0 }
+      #map_canvas { height: 100% }
+	   .labels {
+		 color: black;
+		 background-color: #D0D0D0;
+		 font-family: "Lucida Grande", "Arial", sans-serif;
+		 font-size: 10px;
+		 text-align: center;
+		 width: 40px
+	   }
+	   h3 {
+			text-align:center;
+	   }
+		#weibo-container {
+
+			
+			margin: 3% 1% auto 3%;
+			padding-left: 2%;
+		}
+		#weather-container {
+
+			margin: 3% 3% auto 1%;
+			padding-right: 2%;
+		}
+		#form-go {
+			margin: 5px;
+		}
+    </style>
+    
+	<link href="css/bootstrap.css" rel="stylesheet">
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="css/weather.css" rel="stylesheet">
+  </head>
+  <body>
+  <header>
+	<hgroup>
+      <h1>天时·地利·人和</h1>
+	</hgroup>
+  </header>
+  <header><h3>地利：你周围有趣好玩的地点</h3></header>
+  <div id="map_canvas" style="height:80%"></div>
+  <div class="row">
+		<div id="weibo-container" class="span8">
+			<h3>人和：你周围的人在发微博说些什么</h3>
+			<div id="weibo">微博占位</div>
+		</div>
+		<div id="weather-container" class="span4">
+			<h3>天时：你所在位置的天气状况</h3>
+			
+			<div id="weather">
+				<div id="location">
+				  你在：<span id="loc"></span><br>
+				  <span id="geo"></span>
+				</div>
+				<div id="weather-today">
+				  <div id="num-today">
+					温度：<span id="temp-today"></span><br>
+					湿度：<span id="humi-today"></span><br>
+					风速：<span id="wind-today"></span><br>
+				  </div>
+				  <div id="des-today">
+					<img src="" alt="Today's wether" id="img-today"><br>
+					<span id="text-today"></span>
+				  </div>
+				  
+				</div>
+
+				<div id="weather-forecast">
+				  
+
+				  <div id="forecast-second" class="forecast">
+					<span id="time-second"></span>
+					<div id="num-second">
+					  最高气温：<span id="high-temp-second"></span><br>
+					  最低气温：<span id="low-temp-second"></span><br>
+					</div>
+					<div id="des-second">
+					  <img src="" alt="" id="img-second"><br>
+					  <span id="text-second"></span>
+					</div>
+				  </div>
+
+				  <div id="forecast-first" class="forecast">
+					<span id="time-first"></span>
+					<div id="num-first">
+					  最高气温：<span id="high-temp-first"></span><br>
+					  最低气温：<span id="low-temp-first"></span><br>
+					</div>
+					<div id="des-first">
+					  <img src="" alt="" id="img-first"><br>
+					  <span id="text-first"></span>
+					</div>
+				   </div>
+				</div>
+			</div>
+
+			<form id="form-go">
+				<label>要去哪？</label> 
+				<input type="text" id="togo">
+				<input type="submit" value="我要穿越" id="cross">
+			</form>
+
+
+		</div>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/jquery.min.js"></script>
+  <script src="js/jso.js"></script>
+  <script src="js/yui-min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+	
+  <script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+  <script type="text/javascript" src="js/markerwithlabel.js"></script>
+  <script src="js/weibo.js"></script>
+  <script src="js/weather.js"></script>
+  <script>
+	var globals = {
+		appkey: "2902693128",
+		accesstoken: null,
+		latitude: null,
+		longitude: null,
+		map: null
+	};
+    function initializeMap() {
+        var mapOptions = {
+          center: new google.maps.LatLng(globals.latitude, globals.longitude),
+          zoom: 16,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        globals.map = new google.maps.Map(document.getElementById("map_canvas"),
+            mapOptions);
+      }
+      function updateMap() {
+      	initializeMap();
+		getStatus();
+		showWeather();
+      }
+	  function getPosition() {
+		navigator.geolocation.getCurrentPosition(
+		function onSuccess(position) {
+			globals.latitude = position.coords.latitude;
+			globals.longitude = position.coords.longitude;
+			var timestamp = new Date(position.timestamp);
+			console.log("latitude = " + globals.latitude);
+			console.log("longitude = " + globals.longitude);
+			updateMap();
+		},
+		function onError(error) {
+			var txt;
+			switch(error.code) {
+				case error.PERMISSION_DENIED:
+				txt = 'Permission denied';
+				break;
+				case error.POSITION_UNAVAILABLE:
+				txt = 'Position unavailable';
+				break;
+				case error.TIMEOUT:
+				txt = 'Position lookup timed out';
+				break;
+				default:
+				txt = 'Unknown position.'
+			}
+			console.log(txt);
+		});
+	}
+  
+	$(document).ready(function() {
+		getPosition();
+		$('#cross').click(function() {
+			updatePoint();
+			updateMap();
+			return false;
+		});
+	  });
+  </script>
+  </body>
+</html>
