@@ -28,6 +28,6 @@ function getPosition() {
     });
 }
 
-$(document).ready(function() {
-	getPosition();
-});
+// $(document).ready(function() {
+// 	getPosition();
+// });

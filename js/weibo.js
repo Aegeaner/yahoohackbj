@@ -12,7 +12,8 @@ function Oauth2() {
 }
 
 function getStatus() {
-    Oauth2();
+    if(!globals.accesstoken)
+        Oauth2();
     
     YUI().use('node', 'jsonp', 'jsonp-url', function (Y) {
         var getStatusUrl = "https://api.weibo.com/2/place/nearby/users.json?source=" +
@@ -28,14 +29,19 @@ function getStatus() {
         function handleStatusJSONP(response) {
             var result = '';
             var users = response.data.users;
-            for(var i=0; i<users.length; i++) {
-                var screen_name = users[i].screen_name;
-                var last_at = users[i].last_at;
-                var status = users[i].status.text;
-                var lat = null;
-                var lon = null;
-                //console.log(users[i]);
-                result += "<p><b>" + screen_name + "</b> 在<i>" + last_at + "</i> 说：" + status +"</p></hr>";
+            if (users != null) {
+                for(var i=0; i<users.length; i++) {
+                    var screen_name = users[i].screen_name;
+                    var last_at = users[i].last_at;
+                    var status = users[i].status.text;
+                    var lat = null;
+                    var lon = null;
+                    //console.log(users[i]);
+                    result += "<p><b>" + screen_name + "</b> 在<i>" + last_at + "</i> 说：" + status +"</p></hr>";
+                }
+            }
+            if (result === '') {
+                result = '没有搜索到该地区的微博';
             }
             document.getElementById('weibo').innerHTML = result;
         }

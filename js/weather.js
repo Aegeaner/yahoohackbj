@@ -13,6 +13,12 @@ function genWeatherForecastUrl(woeid) {
   return query;
 }
 
+function genGeoPlaceUrl(text) {
+  var query = 'http://query.yahooapis.com/v1/public/yql?q=select%20centroid%20from%20geo.places%20where%20text%3D%22';
+  query += encodeURI(text) + '%22&format=json';
+  return query;
+}
+
 function httpGet(theUrl) {
   var xmlHttp = null;
   xmlHttp = new XMLHttpRequest();
@@ -115,6 +121,23 @@ function getWeather(longitude, latitude) {
   return ret;
 }
 
+function getGeoPoint(text) {
+  var centroid = null;
+  var geoPlaceUrl = genGeoPlaceUrl(text);
+  var rs = JSON.parse(httpGet(geoPlaceUrl));
+  var count = rs.query.count;
+  if (count == 0) {
+    centroid = null;
+  }
+  if (count == 1) {
+    centroid = rs.query.results.place.centroid;
+  }
+  else {
+    centroid = rs.query.results.place[0].centroid;
+  }
+  return centroid;
+}
+
 var imgUrl = 'http://l.yimg.com/a/i/us/we/52/'
 
 function putSth(which, where, tempUnit) {
@@ -163,5 +186,16 @@ function showWeather() {
   var w = getWeather(globals.longitude, globals.latitude);
   if (w) {
     show(w);
+  }
+}
+
+function updatePoint() {
+  var text = document.getElementById('togo').value;
+  if (text != "") {
+    var centroid = getGeoPoint(text);
+    if (centroid != null) {
+      globals.longitude = centroid.longitude;
+      globals.latitude = centroid.latitude;
+    }
   }
 }

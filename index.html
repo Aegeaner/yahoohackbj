@@ -31,6 +31,9 @@
 			margin: 3% 3% auto 1%;
 			padding-right: 2%;
 		}
+		#form-go {
+			margin: 5px;
+		}
     </style>
     
 	<link href="css/bootstrap.css" rel="stylesheet">
@@ -99,6 +102,14 @@
 				   </div>
 				</div>
 			</div>
+
+			<form id="form-go">
+				<label>要去哪？</label> 
+				<input type="text" id="togo">
+				<input type="submit" value="我要穿越" id="cross">
+			</form>
+
+
 		</div>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/jquery.min.js"></script>
@@ -124,8 +135,14 @@
           zoom: 16,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
+
         globals.map = new google.maps.Map(document.getElementById("map_canvas"),
             mapOptions);
+      }
+      function updateMap() {
+      	initializeMap();
+		getStatus();
+		showWeather();
       }
 	  function getPosition() {
 		navigator.geolocation.getCurrentPosition(
@@ -135,9 +152,7 @@
 			var timestamp = new Date(position.timestamp);
 			console.log("latitude = " + globals.latitude);
 			console.log("longitude = " + globals.longitude);
-			initializeMap();
-			getStatus();
-			showWeather();
+			updateMap();
 		},
 		function onError(error) {
 			var txt;
@@ -160,6 +175,11 @@
   
 	$(document).ready(function() {
 		getPosition();
+		$('#cross').click(function() {
+			updatePoint();
+			updateMap();
+			return false;
+		});
 	  });
   </script>
   </body>
